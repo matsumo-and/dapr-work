@@ -30,6 +30,7 @@ kind create cluster --config cluster/cluster.yaml --name kindcluster
 Helmfileを使って一括でインストールします。
 
 ```bash
+cd manifests
 helmfile apply
 ```
 
