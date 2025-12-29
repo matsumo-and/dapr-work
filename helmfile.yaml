@@ -1,0 +1,45 @@
+repositories:
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: dapr
+    url: https://dapr.github.io/helm-charts/
+
+releases:
+  # Metrics Server (必須)
+  - name: metrics-server
+    namespace: kube-system
+    chart: metrics-server/metrics-server
+    version: ~3.12.0
+    values:
+      - args:
+          - --kubelet-insecure-tls
+
+  # Dapr (必須)
+  - name: dapr
+    namespace: dapr-system
+    createNamespace: true
+    chart: dapr/dapr
+    version: ~1.14.0
+    values:
+      - global:
+          ha:
+            enabled: false
+
+  # Prometheus + Grafana (推奨)
+  - name: prometheus
+    namespace: monitoring
+    createNamespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    version: ~65.0.0
+    values:
+      - grafana:
+          adminPassword: admin
+          service:
+            type: NodePort
+            nodePort: 30030
+        prometheus:
+          service:
+            type: NodePort
+            nodePort: 30090

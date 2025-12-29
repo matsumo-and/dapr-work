@@ -11,6 +11,10 @@ A demo repository for Dapr with multiple Go gRPC-Connect services running on a K
 
 公式ページを参照してください: https://helm.sh/ja/docs/intro/install/
 
+### 2.5. Helmfile のインストール
+
+公式ページを参照してください: https://helmfile.readthedocs.io/en/latest/#installation
+
 ### 3. kind のインストール
 
 公式ページを参照してください: https://kind.sigs.k8s.io/docs/user/quick-start/#installation
@@ -20,3 +24,31 @@ A demo repository for Dapr with multiple Go gRPC-Connect services running on a K
 ```bash
 kind create cluster --config cluster/cluster.yaml --name kindcluster
 ```
+
+### 5. 基本アドオンのセットアップ
+
+Helmfileを使って一括でインストールします。
+
+```bash
+helmfile apply
+```
+
+これにより以下がインストールされます:
+- **Metrics Server** (必須) - リソース監視用
+- **Dapr** (必須) - Daprランタイム
+- **Prometheus + Grafana** (推奨) - メトリクス監視と可視化
+
+#### NGINX Ingress Controller のインストール（推奨）
+
+外部からのアクセスを受け付けるために必要です。
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+```
+
+公式ページ: https://kubernetes.github.io/ingress-nginx/deploy/
+
+#### アクセス情報
+
+- Grafana: http://localhost:30030 (admin/admin)
+- Prometheus: http://localhost:30090
