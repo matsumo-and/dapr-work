@@ -34,19 +34,10 @@ helmfile apply
 ```
 
 これにより以下がインストールされます:
-- **Metrics Server** (必須) - リソース監視用
-- **Dapr** (必須) - Daprランタイム
-- **Prometheus + Grafana** (推奨) - メトリクス監視と可視化
-
-#### NGINX Ingress Controller のインストール（推奨）
-
-外部からのアクセスを受け付けるために必要です。
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-```
-
-公式ページ: https://kubernetes.github.io/ingress-nginx/deploy/
+- **NGINX Ingress Controller** - 外部アクセス用（ALB相当）
+- **Metrics Server** - リソース監視用
+- **Dapr** - Daprランタイム
+- **Prometheus + Grafana** - メトリクス監視と可視化
 
 #### アクセス情報
 

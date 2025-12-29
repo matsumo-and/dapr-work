@@ -7,6 +7,10 @@ repositories:
     url: https://dapr.github.io/helm-charts/
 
 releases:
+  # NGINX Ingress Controller (推奨)
+  - name: nginx-ingress
+    chart: ./manifests/ingress
+    namespace: ingress-nginx
   # Metrics Server (必須)
   - name: metrics-server
     namespace: kube-system
