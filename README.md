@@ -37,13 +37,38 @@ helmfile apply
 これにより以下がインストールされます:
 - **NGINX Ingress Controller** - 外部アクセス用（ALB相当）
 - **Metrics Server** - リソース監視用
-- **Dapr** - Daprランタイム
-- **Prometheus + Grafana** - メトリクス監視と可視化
+- **Dapr** - Daprランタイム（Zipkinによる分散トレーシング機能を含む）
+- **PostgreSQL** - データベース（開発用）
 
 #### アクセス情報
 
-- Grafana: http://localhost:30030 (admin/admin)
-- Prometheus: http://localhost:30090
+- PostgreSQL: localhost:30432
+  - Database: `appdb`
+  - Username: `app`
+  - Password: `app123`
+  - Admin user: `postgres` / `postgres`
+
+> **Note:** 分散トレーシングにはDaprが自動セットアップするZipkinを使用します。
+> 長期的なメトリクス監視が必要な場合は、Prometheus/Grafanaを追加してください。
+
+## ローカル開発環境
+
+Dapr CLIとDocker Composeを使ったローカル開発については [README.local.md](README.local.md) を参照してください。
+
+```bash
+# アプリケーションディレクトリに移動
+cd app
+
+# アプリケーションインフラ起動（PostgreSQL）
+make docker-up
+
+# Dapr初期化（初回のみ - Redis, Zipkin, Placement自動セットアップ）
+make dapr-init
+
+# サービス起動
+make dapr-run-auth
+make dapr-run-user
+```
 
 ## アプリケーション開発
 

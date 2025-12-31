@@ -1,17 +1,17 @@
 repositories:
   - name: metrics-server
     url: https://kubernetes-sigs.github.io/metrics-server/
-  - name: prometheus-community
-    url: https://prometheus-community.github.io/helm-charts
   - name: dapr
     url: https://dapr.github.io/helm-charts/
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
 
 releases:
-  # NGINX Ingress Controller (推奨)
+  # NGINX Ingress Controller
   - name: nginx-ingress
     chart: ./ingress
     namespace: ingress-nginx
-  # Metrics Server (必須)
+  # Metrics Server
   - name: metrics-server
     namespace: kube-system
     chart: metrics-server/metrics-server
@@ -20,7 +20,7 @@ releases:
       - args:
           - --kubelet-insecure-tls
 
-  # Dapr (必須)
+  # Dapr
   - name: dapr
     namespace: dapr-system
     createNamespace: true
@@ -31,20 +31,25 @@ releases:
           ha:
             enabled: false
 
-  # Prometheus + Grafana (推奨)
-  - name: prometheus
-    namespace: monitoring
+  # PostgreSQL　　(dev)
+  - name: postgresql
+    namespace: database
     createNamespace: true
-    chart: prometheus-community/kube-prometheus-stack
-    version: ~65.0.0
-    timeout: 600
+    chart: bitnami/postgresql
+    version: ~16.4.0
     values:
-      - grafana:
-          adminPassword: admin
+      - auth:
+          postgresPassword: postgres
+          username: app
+          password: app123
+          database: appdb
+        primary:
           service:
             type: NodePort
-            nodePort: 30030
-        prometheus:
-          service:
-            type: NodePort
-            nodePort: 30090
+            nodePorts:
+              postgresql: 30432
+          persistence:
+            enabled: true
+            size: 1Gi
+        metrics:
+          enabled: true
