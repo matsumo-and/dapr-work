@@ -1,23 +1,20 @@
-package handler
+package auth
 
 import (
 	"context"
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
-	authv1 "github.com/matsumo_and/dapr-work/app/auth-service/proto/authv1"
-	"github.com/matsumo_and/dapr-work/app/auth-service/proto/authv1/authv1connect"
+	authv1 "github.com/matsumo_and/dapr-work/app/proto/auth/v1"
 )
 
-type AuthHandler struct {
-	authv1connect.UnimplementedAuthServiceHandler
+type Handler struct{}
+
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
-func NewAuthHandler() *AuthHandler {
-	return &AuthHandler{}
-}
-
-func (h *AuthHandler) Login(
+func (h *Handler) Login(
 	ctx context.Context,
 	req *connect.Request[authv1.LoginRequest],
 ) (*connect.Response[authv1.LoginResponse], error) {
@@ -33,7 +30,7 @@ func (h *AuthHandler) Login(
 	return res, nil
 }
 
-func (h *AuthHandler) ValidateToken(
+func (h *Handler) ValidateToken(
 	ctx context.Context,
 	req *connect.Request[authv1.ValidateTokenRequest],
 ) (*connect.Response[authv1.ValidateTokenResponse], error) {
@@ -46,7 +43,7 @@ func (h *AuthHandler) ValidateToken(
 	return res, nil
 }
 
-func (h *AuthHandler) Logout(
+func (h *Handler) Logout(
 	ctx context.Context,
 	req *connect.Request[authv1.LogoutRequest],
 ) (*connect.Response[authv1.LogoutResponse], error) {

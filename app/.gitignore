@@ -1,0 +1,9 @@
+bin/
+vendor/
+*.sum
+
+# Generated proto files
+**/*.pb.go
+**/*connect.go
+**/authv1connect/
+**/userv1connect/

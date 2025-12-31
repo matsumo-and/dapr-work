@@ -44,3 +44,7 @@ helmfile apply
 
 - Grafana: http://localhost:30030 (admin/admin)
 - Prometheus: http://localhost:30090
+
+## アプリケーション開発
+
+アプリケーションのセットアップと開発方法については [app/README.md](app/README.md) を参照してください。

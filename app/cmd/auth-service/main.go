@@ -4,17 +4,24 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/matsumo_and/dapr-work/app/auth-service/internal/handler"
-	"github.com/matsumo_and/dapr-work/app/auth-service/proto/authv1/authv1connect"
+	"github.com/matsumo_and/dapr-work/app/internal/service/auth"
+	"github.com/matsumo_and/dapr-work/app/proto/auth/v1/authv1connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
 func main() {
-	authHandler := handler.NewAuthHandler()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	mux := http.NewServeMux()
+
+	// auth-serviceのハンドラーを登録
+	authHandler := auth.NewHandler()
 	path, handler := authv1connect.NewAuthServiceHandler(authHandler)
 	mux.Handle(path, handler)
 
@@ -24,8 +31,8 @@ func main() {
 		w.Write([]byte("OK"))
 	})
 
-	addr := ":8080"
-	fmt.Printf("auth-service listening on %s\n", addr)
+	addr := fmt.Sprintf(":%s", port)
+	log.Printf("auth-service listening on %s", addr)
 
 	if err := http.ListenAndServe(
 		addr,

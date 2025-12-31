@@ -4,18 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/matsumo_and/dapr-work/app/user-service/internal/handler"
-	"github.com/matsumo_and/dapr-work/app/user-service/proto/userv1/userv1connect"
+	"github.com/matsumo_and/dapr-work/app/internal/service/user"
+	userv1 "github.com/matsumo_and/dapr-work/app/proto/user/v1/userv1connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
 func main() {
-	userHandler := handler.NewUserHandler()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
 
 	mux := http.NewServeMux()
-	path, handler := userv1connect.NewUserServiceHandler(userHandler)
+
+	// user-serviceのハンドラーを登録
+	userHandler := user.NewHandler()
+	path, handler := userv1.NewUserServiceHandler(userHandler)
 	mux.Handle(path, handler)
 
 	// Health check endpoint
@@ -24,8 +31,8 @@ func main() {
 		w.Write([]byte("OK"))
 	})
 
-	addr := ":8081"
-	fmt.Printf("user-service listening on %s\n", addr)
+	addr := fmt.Sprintf(":%s", port)
+	log.Printf("user-service listening on %s", addr)
 
 	if err := http.ListenAndServe(
 		addr,

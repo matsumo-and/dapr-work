@@ -1,4 +1,4 @@
-package handler
+package user
 
 import (
 	"context"
@@ -6,19 +6,16 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
-	userv1 "github.com/matsumo_and/dapr-work/app/user-service/proto/userv1"
-	"github.com/matsumo_and/dapr-work/app/user-service/proto/userv1/userv1connect"
+	userv1 "github.com/matsumo_and/dapr-work/app/proto/user/v1"
 )
 
-type UserHandler struct {
-	userv1connect.UnimplementedUserServiceHandler
+type Handler struct{}
+
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
-func NewUserHandler() *UserHandler {
-	return &UserHandler{}
-}
-
-func (h *UserHandler) GetUser(
+func (h *Handler) GetUser(
 	ctx context.Context,
 	req *connect.Request[userv1.GetUserRequest],
 ) (*connect.Response[userv1.GetUserResponse], error) {
@@ -37,7 +34,7 @@ func (h *UserHandler) GetUser(
 	return res, nil
 }
 
-func (h *UserHandler) CreateUser(
+func (h *Handler) CreateUser(
 	ctx context.Context,
 	req *connect.Request[userv1.CreateUserRequest],
 ) (*connect.Response[userv1.CreateUserResponse], error) {
@@ -56,7 +53,7 @@ func (h *UserHandler) CreateUser(
 	return res, nil
 }
 
-func (h *UserHandler) UpdateUser(
+func (h *Handler) UpdateUser(
 	ctx context.Context,
 	req *connect.Request[userv1.UpdateUserRequest],
 ) (*connect.Response[userv1.UpdateUserResponse], error) {
@@ -75,7 +72,7 @@ func (h *UserHandler) UpdateUser(
 	return res, nil
 }
 
-func (h *UserHandler) DeleteUser(
+func (h *Handler) DeleteUser(
 	ctx context.Context,
 	req *connect.Request[userv1.DeleteUserRequest],
 ) (*connect.Response[userv1.DeleteUserResponse], error) {

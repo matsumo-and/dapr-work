@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user.v1;
 
-option go_package = "github.com/matsumo_and/dapr-work/app/user-service/proto/userv1";
+option go_package = "github.com/matsumo_and/dapr-work/app/proto/user/v1;userv1";
 
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {}

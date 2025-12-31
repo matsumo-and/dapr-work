@@ -1,4 +1,0 @@
-bin/
-*.pb.go
-*connect.go
-vendor/
